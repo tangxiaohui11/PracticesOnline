@@ -10,20 +10,19 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.text.TextUtils;
 import android.util.Pair;
 
 
 import java.io.IOException;
-import java.net.HttpRetryException;
+
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
+
 import java.net.URL;
-import java.util.Hashtable;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.CountDownLatch;
+
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -119,13 +118,12 @@ public class AppUtils extends Application {
         spSetting.edit()
                 .putString(URL_IP,ip)
                 .putString(URL_PORT,port)
-
                 .apply();
     }
     public static Pair<String,String> loadServerSetting(Context context){
-        SharedPreferences spSrtting=context.getSharedPreferences(SP_SETTING,MODE_PRIVATE);
-        String ip=spSrtting.getString(URL_IP,"10.88.91.102");
-        String port=spSrtting.getString(URL_PORT,"5555");
+        SharedPreferences spSrting=context.getSharedPreferences(SP_SETTING,MODE_PRIVATE);
+        String ip=spSrting.getString(URL_IP,"10.88.91.103");
+        String port=spSrting.getString(URL_PORT,"5555");
         return new Pair<>(ip,port);
     }
 }

@@ -18,7 +18,11 @@ import net.lzzy.practicesonline.activities.activities.utils.AppUtils;
  */
 @SuppressLint("Registered")
 public abstract class BaseActivity extends AppCompatActivity {
+
+    private Fragment fragment;
+
     public BaseActivity(){}
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,13 +33,17 @@ public abstract class BaseActivity extends AppCompatActivity {
         AppUtils.addActivity(this);
         //region  托管Fragment
         FragmentManager manager=getSupportFragmentManager();
-        Fragment fragment=manager.findFragmentById(getContainerId());
-        if (fragment==null){
-            fragment=createFragment();
-            manager.beginTransaction().add(getContainerId(),fragment).commit();
+        fragment = manager.findFragmentById(getContainerId());
+        if (fragment ==null){
+            fragment =createFragment();
+            manager.beginTransaction().add(getContainerId(), fragment).commit();
         }
         //endregion
     }
+    protected Fragment getFragment(){
+        return fragment;
+    }
+
 
     @Override
     protected void onDestroy() {

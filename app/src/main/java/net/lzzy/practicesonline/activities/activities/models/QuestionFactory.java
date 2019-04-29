@@ -17,7 +17,6 @@ import java.util.List;
 public class QuestionFactory {
     private static final QuestionFactory OUR_INSTANCE=new QuestionFactory();
     private SqlRepository<Question> repository;
-    private SqlRepository<Option> eqtionRepoaitoty;
     private SqlRepository<Option> optionSqlRepository;
 
     public static QuestionFactory getInstance(){
@@ -48,7 +47,7 @@ public class QuestionFactory {
     public List<Question> getByPractice(String practiceId){
         try {
             List<Question> questions=repository.getByKeyword(practiceId,
-                    new String[]{Option.COL_QUESTION_ID},true);
+                    new String[]{"id"},true);
             for (Question question:questions){
                 completeQuestion(question);
             }
@@ -75,7 +74,7 @@ public class QuestionFactory {
         List<String> sqlActions=new ArrayList<>();
         sqlActions.add(repository.getDeleteString(question));
         for (Option option:question.getOptions()){
-            sqlActions.add(eqtionRepoaitoty.getDeleteString(option));
+            sqlActions.add(optionSqlRepository.getDeleteString(option));
         }
         String f=FavoriteFactory.getInstance().gerDeleteString(question.getId().toString());
         if (!TextUtils.isEmpty(f)){

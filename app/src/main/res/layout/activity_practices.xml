@@ -3,10 +3,10 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-    <FrameLayout android:id="@+id/activity_practices_container"
+    <include layout="@layout/bar_title"/>
+    <FrameLayout
+        android:id="@+id/activity_practices_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </FrameLayout>
+        android:layout_height="match_parent" />
 
 </LinearLayout>
