@@ -17,8 +17,12 @@ import java.io.IOException;
 
 import java.net.HttpURLConnection;
 
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.net.URL;
 
+import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
@@ -125,5 +129,31 @@ public class AppUtils extends Application {
         String ip=spSrting.getString(URL_IP,"10.88.91.103");
         String port=spSrting.getString(URL_PORT,"5555");
         return new Pair<>(ip,port);
+    }
+    public static List<String> getMacAddress(){
+        try {
+            Enumeration<NetworkInterface>interfaces=NetworkInterface.getNetworkInterfaces();
+            List<String>item=new ArrayList<>();
+            while (interfaces.hasMoreElements()){
+                NetworkInterface ni=interfaces.nextElement();
+                byte[] address=ni.getHardwareAddress();
+                if (address==null||address.length==0){
+                    continue;
+                }
+                StringBuilder builder=new StringBuilder();
+                for (byte a:address){
+                    builder.append(String.format("%02X:",a));
+                }
+                if (builder.length()>0){
+                    builder.deleteCharAt(builder.length()-1);
+                }
+                if (ni.isUp()){
+                    item.add(ni.getName()+":"+builder.toString());
+                }
+            }
+            return item;
+        }catch (SocketException e){
+            return new ArrayList<>();
+        }
     }
 }

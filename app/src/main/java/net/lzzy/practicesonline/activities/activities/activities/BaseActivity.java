@@ -1,15 +1,11 @@
 package net.lzzy.practicesonline.activities.activities.activities;
-
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.Window;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-
 import net.lzzy.practicesonline.activities.activities.utils.AppUtils;
-
 /**
  *
  * @author lzzy_gxy
@@ -59,7 +55,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onResume();
         AppUtils.setRunning(getLocalClassName());
     }
-
     /** 在停止的时候清空 **/
     @Override
     protected void onStop() {

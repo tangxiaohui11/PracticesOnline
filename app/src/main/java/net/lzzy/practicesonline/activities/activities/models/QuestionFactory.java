@@ -47,7 +47,7 @@ public class QuestionFactory {
     public List<Question> getByPractice(String practiceId){
         try {
             List<Question> questions=repository.getByKeyword(practiceId,
-                    new String[]{"id"},true);
+                    new String[]{"practiceId"},true);
             for (Question question:questions){
                 completeQuestion(question);
             }
@@ -58,10 +58,10 @@ public class QuestionFactory {
         return new ArrayList<>();
     }
     public void insert(Question question){
-        String q=repository.getDeleteString(question);
+        String q=repository.getInsertString(question);
         List<String>sqlActions=new ArrayList<>();
         for (Option option:question.getOptions()){
-            sqlActions.add(optionSqlRepository.getDeleteString(option));
+            sqlActions.add(optionSqlRepository.getInsertString(option));
 
         }
         sqlActions.add(q);
