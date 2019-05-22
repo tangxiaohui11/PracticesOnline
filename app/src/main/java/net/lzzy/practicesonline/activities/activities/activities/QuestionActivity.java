@@ -1,6 +1,5 @@
 package net.lzzy.practicesonline.activities.activities.activities;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
@@ -11,8 +10,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+
 import net.lzzy.practicesonline.R;
 import net.lzzy.practicesonline.activities.activities.fragments.QuestionFragment;
+import net.lzzy.practicesonline.activities.activities.models.FavoriteFactory;
 import net.lzzy.practicesonline.activities.activities.models.PracticeResult;
 import net.lzzy.practicesonline.activities.activities.models.Question;
 import net.lzzy.practicesonline.activities.activities.models.QuestionFactory;
@@ -22,12 +29,6 @@ import net.lzzy.practicesonline.activities.activities.network.PracticeService;
 import net.lzzy.practicesonline.activities.activities.utils.AbstractStaticHandler;
 import net.lzzy.practicesonline.activities.activities.utils.AppUtils;
 import net.lzzy.practicesonline.activities.activities.utils.ViewUtils;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.viewpager.widget.ViewPager;
 
 import org.json.JSONException;
 
@@ -41,7 +42,7 @@ public class QuestionActivity extends AppCompatActivity {
     public static final int WHAT_EXCEPTION = 2;
     public static final String EXTRA_PRACTICE_ID = "extraPracticeId";
     public static final String EXTRA_RESULT = "extraResult";
-    private static final int REQUEST_CODE_RESULT=0;
+    private static final int REQUEST_CODE_RESULT=2;
     private String practiceId;
     private int apiId;
     private List<Question> questions;
@@ -67,7 +68,7 @@ public class QuestionActivity extends AppCompatActivity {
 
         pos= UserCookies.getInstance().getCurrentQuestion(practiceId);
         pager.setCurrentItem(pos);
-        rofroshDots(pos);
+        refreshDots(pos);
 
         UserCookies.getInstance().updateReadCount(questions.get(pos).getId().toString());
     }
@@ -81,7 +82,7 @@ public class QuestionActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
-                rofroshDots(position);
+                refreshDots(position);
                 UserCookies.getInstance().updateCurrentQuestion(practiceId,position);
                 UserCookies.getInstance().updateReadCount(questions.get(position).getId().toString());
             }
@@ -103,6 +104,39 @@ public class QuestionActivity extends AppCompatActivity {
         startActivityForResult(intent,REQUEST_CODE_RESULT);
 
     }
+    /** 重新进入后处理 **/
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode==ResultActivity.RESULT_CODE&&requestCode==REQUEST_CODE_RESULT) {
+            pager.setCurrentItem(data.getIntExtra(ResultActivity.POSITION,-1));
+        }
+        if (requestCode==ResultActivity.RESULT_CODE_PRACTICE && resultCode==REQUEST_CODE_RESULT&&data!=null){
+            String practiceId=data.getStringExtra(ResultActivity.PRACTICES_ID);
+            if (!practiceId.isEmpty()){
+                List<Question> questionList=new ArrayList<>();
+                FavoriteFactory factory=FavoriteFactory.getInstance();
+                for (Question question:QuestionFactory.getInstance().getByPractice(practiceId)){
+                    if (factory.isQuestionStarred(question.getId().toString())){
+                        questionList.add(question);
+                    }
+                }
+                questions.clear();
+                questions.addAll(questionList);
+                initDots();
+                adapter.notifyDataSetChanged();
+                if (questions.size()>0){
+                    pager.setCurrentItem(0);
+                    refreshDots(0);
+                }
+
+            }
+
+        }
+
+    }
+
+
 
     String info;
     private void commitPractice(){
@@ -133,6 +167,7 @@ public class QuestionActivity extends AppCompatActivity {
             switch (msg.what){
                 case WHAT_OK:
                     questionActivity.isCommitted=true;
+                    UserCookies.getInstance().commitPracetice(questionActivity.practiceId);
                     Toast.makeText(questionActivity, "提交成功", Toast.LENGTH_SHORT).show();
                     break;
                 case WHAT_NO:
@@ -187,7 +222,7 @@ public class QuestionActivity extends AppCompatActivity {
             dots[i]=tvDot;
         }
     }
-    private void rofroshDots(int pos){
+    private void refreshDots(int pos){
         for (int i=0;i<dots.length;i++){
             int drawable=i==pos? R.drawable.dot_fill_style:R.drawable.dot_style;
             dots[i].setBackgroundResource(drawable);

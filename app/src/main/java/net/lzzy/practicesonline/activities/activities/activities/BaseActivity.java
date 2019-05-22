@@ -16,7 +16,7 @@ import net.lzzy.practicesonline.activities.activities.utils.AppUtils;
 public abstract class BaseActivity extends AppCompatActivity {
 
     private Fragment fragment;
-
+    private FragmentManager manager;
     public BaseActivity(){}
 
 
@@ -28,7 +28,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         /** 调用添加方法**/
         AppUtils.addActivity(this);
         //region  托管Fragment
-        FragmentManager manager=getSupportFragmentManager();
+        manager=getSupportFragmentManager();
         fragment = manager.findFragmentById(getContainerId());
         if (fragment ==null){
             fragment =createFragment();
@@ -36,6 +36,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
         //endregion
     }
+    protected  FragmentManager getManager(){
+        return manager;
+    }
+
     protected Fragment getFragment(){
         return fragment;
     }

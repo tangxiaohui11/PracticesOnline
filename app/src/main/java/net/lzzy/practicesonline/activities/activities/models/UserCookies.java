@@ -4,12 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Pair;
 
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import net.lzzy.practicesonline.activities.activities.utils.AppUtils;
 import net.lzzy.practicesonline.activities.activities.utils.DateTimeUtils;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -147,7 +144,7 @@ public class UserCookies {
        if (miss&&extra){
            return new Pair<>(false,WrongType.WRONG_OPTIONS);
        }else if (miss){
-           return new Pair<>(false,WrongType.NISS_OPTIONS);
+           return new Pair<>(false,WrongType.MISS_OPTIONS);
        }else if (extra){
            return new Pair<>(false,WrongType.EXTTRA_OPTIONS);
        }else {

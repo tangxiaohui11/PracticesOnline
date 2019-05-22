@@ -3,7 +3,6 @@ package net.lzzy.practicesonline.activities.activities.network;
 import net.lzzy.practicesonline.activities.activities.constants.ApiConstants;
 import net.lzzy.practicesonline.activities.activities.models.Practice;
 import net.lzzy.practicesonline.activities.activities.models.PracticeResult;
-import net.lzzy.practicesonline.activities.activities.utils.AppUtils;
 import net.lzzy.sqllib.JsonConverter;
 
 import org.json.JSONException;

@@ -2,31 +2,22 @@ package net.lzzy.practicesonline.activities.activities.utils;
 
 import android.app.Activity;
 import android.app.Application;
-import android.app.SharedElementCallback;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Pair;
 
-
 import java.io.IOException;
-
 import java.net.HttpURLConnection;
-
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.net.URL;
-
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
-
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
